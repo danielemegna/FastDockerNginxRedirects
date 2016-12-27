@@ -17,6 +17,10 @@ $ docker -dp 80:80 -v $(pwd):/etc/nginx/conf.d/ redirects
 
 `redirect.conf` is mounted as a volume, so you can hotfix it without rebuilding the container with
 ```
+$ docker-compose restart
+```
+or
+```
 # check the container name
 $ docker restart redirects_web_1 
 ```
