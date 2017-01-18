@@ -4,5 +4,6 @@ services:
     build: .
     ports:
       - "80:80"
+      - "8000:8000"
     volumes:
       - .:/etc/nginx/conf.d/
