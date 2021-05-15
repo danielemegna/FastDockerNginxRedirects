@@ -1,26 +1,19 @@
 # FastDockerNginxRedirects
 Minimal docker alpine based customizable http nginx redirect service
 
-## What is this?
-wip
-
 ## How can I use it?
 Configure `redirect.conf` with your redirections and run the container with
 ```
-$ docker-compose up -d
+$ docker build -t redirects .
+$ docker run --rm -dp 80:80 --name nginx redirects
 ```
-or
+or in host network mode
 ```
-$ docker build -t redirects
-$ docker -dp 80:80 -v $(pwd):/etc/nginx/conf.d/ redirects
+$ docker run --rm -d --network=host --name nginx redirects
 ```
 
-`redirect.conf` is mounted as a volume, so you can hotfix it without rebuilding the container with
+to mount `redirect.conf` as a volume, so you can hotfix it without rebuilding the container with
 ```
-$ docker-compose restart
-```
-or
-```
-# check the container name
-$ docker restart redirects_web_1 
+$ docker run --rm -dp 80:80 -v $(pwd):/etc/nginx/conf.d/ --name nginx redirects
+$ docker restart
 ```
