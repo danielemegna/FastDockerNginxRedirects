@@ -5,8 +5,7 @@ RUN rm -rf /var/cache/apk/*
 
 COPY nginx.settings /etc/nginx/nginx.conf
 COPY redirect.conf /etc/nginx/conf.d/
-
-COPY letsencrypt /etc/letsencrypt
 COPY certbot-renew-crontab /etc/crontabs/
+#COPY letsencrypt /etc/letsencrypt
 
 CMD ["nginx", "-g", "daemon off;"]
