@@ -1,8 +1,12 @@
 # FastDockerNginxRedirects
-Minimal docker alpine based customizable http nginx redirect service
+
+Minimal docker alpine based customizable http nginx redirect / proxy service
 
 ## How can I use it?
-Configure `redirect.conf` with your redirections and run the container with
+
+Configure `redirect.conf` with your redirections / proxy server directives.
+
+Then, build and run the image with:
 ```
 $ docker build -t redirects .
 $ docker run --rm -d --network=host --name nginx redirects
@@ -10,35 +14,28 @@ $ docker run --rm -d --network=host --name nginx redirects
 
 ## Https certification setup
 
-To create or renew a production ready letsencrypt folder, open a temporary ngnix container:
+Mounting the _letsencrypt_ folder, https certificates can be used in `redirect.conf`.
 
+Run the container with the mounted folder:
 ```
-$ docker stop nginx
-$ docker build -t redirects .
-$ docker run --rm -d --network=host --name nginx-tmp -v $PWD/letsencrypt:/etc/letsencrypt redirects
-$ docker exec -it nginx-tmp sh
+$ ./up-with-volumes
 ```
 
-### Renew existing certificates
-
-Into the temporary container:
-
-```
-# certbot renew --nginx
-# exit
-$ docker stop nginx-tmp
-```
-
-Rebuild docker image and run it:
+<details>
+<summary> Manual docker run command</summary>
 
 ```
-$ docker build -t redirects .
-$ docker run --rm -d --network=host --name nginx redirects
+$ docker run --rm -d --network=host -v $PWD/letsencrypt:/etc/letsencrypt --name nginx redirects
+```
+</details>
+
+Open a shell in the container:
+
+```
+$ docker exec -it nginx sh
 ```
 
-### Create new certificates
-
-Into the temporary container:
+and start certbot certificate generation:
 
 ```
 # certbot certonly --nginx
@@ -53,19 +50,21 @@ Which names would you like to activate HTTPS for?
 6: www.metricamusic.it
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Select the appropriate numbers separated by commas and/or spaces, or leave input
-blank to select all options shown (Enter 'c' to cancel):
+blank to select all options shown (Enter 'c' to cancel): 3,4
 ....
 Cleaning up challenges
 
 # exit
-$ docker stop nginx-tmp
 ```
 
-Configure `redirects.conf` to use ssl certificates under `letsencrypt/live` folder, rebuild docker image and run it:
+> optional: pay attention to choose domains in pairs in order to generate
+> domain-specific certificates in a proper folder with the domain name
+
+Now configure `redirects.conf` to use ssl certificates just generated under `letsencrypt/live` folder and restart the container:
 
 ```
-$ docker build -t redirects .
-$ docker run --rm -d --network=host --name nginx redirects
+$ docker stop nginx
+$ ./up-with-volumes
 ```
 
 Some doc sources:
