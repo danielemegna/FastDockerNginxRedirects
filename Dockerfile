@@ -7,6 +7,6 @@ COPY nginx.settings /etc/nginx/nginx.conf
 COPY redirect.conf /etc/nginx/conf.d/
 
 COPY letsencrypt /etc/letsencrypt
-#COPY certbot-renew-crontab /etc/crontabs/
+COPY certbot-renew-crontab /etc/crontabs/
 
 CMD ["nginx", "-g", "daemon off;"]

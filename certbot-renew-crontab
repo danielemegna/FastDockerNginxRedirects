@@ -1,1 +1,1 @@
-0 12 * * * certbot renew --quiet
+0 12 * * * certbot renew --nginx --quiet
