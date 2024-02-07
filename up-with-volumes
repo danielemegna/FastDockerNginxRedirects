@@ -6,11 +6,11 @@ docker rm -f nginx || true
 
 docker run -d \
   --restart=always \
-	--network=host \
-	-v $SCRIPT_DIR/letsencrypt:/etc/letsencrypt \
-	--name nginx \
-	redirects
+  --network=host \
+  -v $SCRIPT_DIR/letsencrypt:/etc/letsencrypt \
+  --name nginx \
+  redirects
 
-	#-v $SCRIPT_DIR/nginx.settings:/etc/nginx/nginx.conf \
-	#-v $SCRIPT_DIR/redirect.conf:/etc/nginx/conf.d/redirect.conf \
+  #-v $SCRIPT_DIR/nginx.settings:/etc/nginx/nginx.conf \
+  #-v $SCRIPT_DIR/redirect.conf:/etc/nginx/conf.d/redirect.conf \
   #-v $SCRIPT_DIR/certbot-renew-crontab:/etc/crontabs/certbot-renew-crontab \
