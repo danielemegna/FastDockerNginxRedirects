@@ -60,10 +60,18 @@ Cleaning up challenges
 > optional: pay attention to choose domains in pairs in order to generate
 > domain-specific certificates in a proper folder with the domain name
 
-Now configure `redirects.conf` to use ssl certificates just generated under `letsencrypt/live` folder and restart the container:
+Now configure `redirects.conf` to use ssl certificates just generated under `letsencrypt/live` folder.
+
+Then rebuild the docker image to use the new `redirects.conf` file
 
 ```
-$ docker stop nginx
+$ docker build -t redirects .
+```
+
+and restart a new container
+
+```
+$ docker rm -f nginx
 $ ./up-with-volumes
 ```
 
