@@ -30,7 +30,18 @@ $ docker run --rm -d --network=host -v $PWD/letsencrypt:/etc/letsencrypt --name 
 ```
 </details>
 
-Open a shell in the container:
+### To obtain a new certificate
+
+Configure `reverseproxy.conf` in order to have the target domain site reachable **in https only** (listen 80, no ssl certificate entries).
+
+Build and up as usual:
+
+```
+$ docker build -t reverseproxy .
+$ ./up-with-volumes
+```
+
+Then open a shell in the container:
 
 ```
 $ docker exec -it reverseproxy sh
@@ -53,9 +64,6 @@ Which names would you like to activate HTTPS for?
 Select the appropriate numbers separated by commas and/or spaces, or leave input
 blank to select all options shown (Enter 'c' to cancel): 3,4
 ....
-Cleaning up challenges
-
-# exit
 ```
 
 > optional: pay attention to choose domains in pairs in order to generate
@@ -63,16 +71,10 @@ Cleaning up challenges
 
 Now configure `reverseproxy.conf` to use ssl certificates just generated under `letsencrypt/live` folder.
 
-Then rebuild the docker image to use the new `reverseproxy.conf` file
+Then rebuild the docker image to use the new `reverseproxy.conf` file and restart a new container
 
 ```
 $ docker build -t reverseproxy .
-```
-
-and restart a new container
-
-```
-$ docker rm -f reverseproxy
 $ ./up-with-volumes
 ```
 
